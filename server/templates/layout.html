@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="/">Pictor</a>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" style="width: 600px;" type="search" placeholder="Search"
+                    aria-label="Search">
+                <a class="btn btn-outline-success my-2 my-sm-0" href="search.html">Buscar Imagen</a>
+            </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% block menu %}
+
+                {%endblock%}
+            </div>
+        </nav>
+        {% block body %}
+
+        {%endblock%}
+    </div>
+</body>
+</html>

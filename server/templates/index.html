@@ -1,0 +1,27 @@
+{%extends 'layout.html'%}
+
+{%block menu%}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="login.html" onclick="location.href='index.html'">Cerrar Sesion</a>
+    </li>
+</ul>
+{%endblock%}
+{%block body%}
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <div class="card">
+            <img src="{{ url_for('static', filename='img/Pictor.jpg') }}" alt="" class="card-img-top" srcset=""">
+                    <div class=" card-body">
+            <h5 class="card-title text-center">Bienvenido a Pictor</h5>
+            <p class="card-text text-center">Miles de imagenes a un click de distancia</p>
+            <div class="row">
+                <div class="col-md-6 mx-auto text-center">
+                    <a href="signup" class="btn btn-primary mx-auto">Unete!!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{%endblock%}

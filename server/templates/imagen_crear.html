@@ -1,0 +1,58 @@
+{%extends 'layout.html'%}
+
+{%block menu%}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
+            Datos</a>
+    </li>
+</ul>
+{%endblock%}
+
+{%block body%}
+<div class="row mt-4">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center">Subir Nueva Imagen</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="img/tour-eiffel-5210486_1920.jpg" class="card-img-left img-thumbnail" alt=""
+                            srcset="">
+                    </div>
+                    <div class="col-md-6">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="titulo">Titulo</label>
+                                <input type="text" class="form-control" id="titulo">
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripcion</label>
+                                <textarea class="mx-auto" name="" id="descripcion" cols="57" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="tags">Tags</label>
+                                <input type="text" id="tags" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="file">Subir Archivos</label>
+                                <input type="file" class="form-control-file" id="file" style="visibility: hidden;">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary">Guardar</button>
+                                <button class="btn btn-danger">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
