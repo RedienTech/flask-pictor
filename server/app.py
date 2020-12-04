@@ -8,6 +8,10 @@ app = Flask(__name__)
 def Index():
     return render_template("index.html")
 
+@app.route('/perfil')
+def Perfil():
+    return render_template("perfil.html")
+
 
 app.register_blueprint(users, url_prefix='/users')
 

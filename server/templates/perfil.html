@@ -1,113 +1,89 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends 'layout.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-    <link rel="stylesheet" href="bootstrap.min.css">
-</head>
+{%block menu%}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+        <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
+            Datos</a>
+    </li>
+</ul>
+{%endblock%}
 
-<body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">Pictor</a>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" style="width: 500px;" type="search" placeholder="Search"
-                    aria-label="Search">
-                <a class="btn btn-outline-success my-2 my-sm-0" href="search.html">Buscar Imagen</a>
-            </form>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
-                            Datos</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+{% block body %}
 
-        <img src="img/guest.jpg" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;"
-            srcset="" id="thumbnail">
-        <h5 class="text-center">Alex Morgan</h5>
+<img src="img/guest.jpg" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;" srcset=""
+    id="thumbnail">
+<h5 class="text-center">Alex Morgan</h5>
 
-        <div class="ml-2 row mt-3">
-            <div class="col-md-3">
-                <button class="btn btn-success mx-auto" onclick="location.href='imagen_crear.html'">Subir
-                    Imagen</button>
-            </div>
-            <div class="col-md-5">
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" style="width: 200px;" type="search" placeholder="Search"
-                        aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar Imagen</button>
-                </form>
-            </div>
-            <div class="col-md-4">
-                <span>Ordenar Por: </span>
-                <select class="custom-select mr-sm-2" style="width: 200px;" id="inlineFormCustomSelect">
-                    <option value="1">Mas relevantes</option>
-                    <option value="2">Mas Antiguos</option>
-                    <option value="3">Mas recientes</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row mt-4 ml-2">
-            <div class="col-md-6">
-                <div class="custom-control custom-checkbox mr-sm-2">
-                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-                    <label class="custom-control-label" for="customControlAutosizing">Seleccionar todo</label>
-                    <button class="btn btn-danger">Eliminar Seleccionadas</button>
-                </div>
-            </div>
-            <div class="col-md-6 mr-auto text-center">
-                <div class="form-check ml-3">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1"
-                        checked>
-                    <label class="form-check-label" for="gridRadios1">
-                        Lista
-                    </label>
-                </div>
-                <div class="form-check ml-5">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                    <label class="form-check-label" for="gridRadios2">
-                        Mosaico
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4 ml-2">
-            <div class="col-md-4">
-                <img src="img/test1.jpg" alt="" class="img-thumbnail rounded" srcset=""
-                    onclick="location.href='imagen_modificar.html'">
-            </div>
-            <div class="col-md-4">
-                <img src="img/test2.jpg" alt="" class="img-thumbnail rounded" srcset=""
-                    onclick="location.href='imagen_modificar.html'">
-            </div>
-            <div class="col-md-4">
-                <img src="img/test3.jpg" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
-                    onclick="location.href='imagen_modificar.html'">
-            </div>
-        </div>
-
-        <div class="row mt-4 text-center">
-            <h6 class="mx-auto"><a href="">Cargar Mas Imágenes...</a></h6>
-        </div>
-
+<div class="ml-2 row mt-3">
+    <div class="col-md-3">
+        <button class="btn btn-success mx-auto" onclick="location.href='imagen_crear.html'">Subir
+            Imagen</button>
     </div>
-</body>
+    <div class="col-md-5">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" style="width: 200px;" type="search" placeholder="Search"
+                aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar Imagen</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <span>Ordenar Por: </span>
+        <select class="custom-select mr-sm-2" style="width: 200px;" id="inlineFormCustomSelect">
+            <option value="1">Mas relevantes</option>
+            <option value="2">Mas Antiguos</option>
+            <option value="3">Mas recientes</option>
+        </select>
+    </div>
+</div>
 
-</html>
+<div class="row mt-4 ml-2">
+    <div class="col-md-6">
+        <div class="custom-control custom-checkbox mr-sm-2">
+            <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
+            <label class="custom-control-label" for="customControlAutosizing">Seleccionar todo</label>
+            <button class="btn btn-danger">Eliminar Seleccionadas</button>
+        </div>
+    </div>
+    <div class="col-md-6 mr-auto text-center">
+        <div class="form-check ml-3">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+            <label class="form-check-label" for="gridRadios1">
+                Lista
+            </label>
+        </div>
+        <div class="form-check ml-5">
+            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+            <label class="form-check-label" for="gridRadios2">
+                Mosaico
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 ml-2">
+    <div class="col-md-4">
+        <img src="{{ url_for('static', filename='img/test1.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
+            onclick="location.href='imagen_modificar.html'">
+    </div>
+    <div class="col-md-4">
+        <img src="img/test2.jpg" alt="" class="img-thumbnail rounded" srcset=""
+            onclick="location.href='imagen_modificar.html'">
+    </div>
+    <div class="col-md-4">
+        <img src="img/test3.jpg" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
+            onclick="location.href='imagen_modificar.html'">
+    </div>
+</div>
+
+<div class="row mt-4 text-center">
+    <h6 class="mx-auto"><a href="">Cargar Mas Imágenes...</a></h6>
+</div>
+
+{% endblock %}
