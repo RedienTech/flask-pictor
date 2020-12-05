@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from routes.users import users
+from routes.image import image
 
 app = Flask(__name__)
 
@@ -12,7 +13,11 @@ def Index():
 def Perfil():
     return render_template("perfil.html")
 
+@app.route('/search')
+def Search():
+    return render_template("search.html")
 
+app.register_blueprint(image,url_prefix='/image')
 app.register_blueprint(users, url_prefix='/users')
 
 if __name__ == "__main__":

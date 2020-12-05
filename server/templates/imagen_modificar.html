@@ -1,84 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
+{%extends 'layout.html'%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styleM.css">
-    <link rel="stylesheet" href="bootstrap.min.css">
-</head>
+{%block menu%}
 
-<body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">Pictor</a>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" style="width: 500px;" type="search" placeholder="Search"
-                    aria-label="Search">
-                <a class="btn btn-outline-success my-2 my-sm-0" href="search.html">Buscar Imagen</a>
-            </form>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
-                            Datos</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="row mt-4">
-            <div class="col-md-10 mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Modificar Imagen</h5>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img src="img/tour-eiffel-5210486_1920.jpg" class="card-img-left img-thumbnail" alt=""
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
+                Datos</a>
+        </li>
+        </ul>
+{%endblock%}
+
+{%block body%}       
+    <div class="row mt-4">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Modificar Imagen</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ url_for('static', filename='img/tour-eiffel-5210486_1920.jpg') }}" class="card-img-left img-thumbnail" alt=""
                                     srcset="">
-                            </div>
-                            <div class="col-md-6">
-                                <form action="">
-                                    <div class="form-group">
-                                        <label for="titulo">Titulo</label>
-                                        <input type="text" class="form-control" id="titulo">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="descripcion">Descripcion</label>
-                                        <textarea class="mx-auto" name="" id="descripcion" cols="57"
-                                            rows="5"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tags">Tags</label>
-                                        <input type="text" id="tags" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="file">Subir Archivos</label>
-                                        <input type="file" class="form-control-file" id="file"
-                                            style="visibility: hidden;">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-primary">Modificar</button>
-                                        <button class="btn btn-danger">Cancelar</button>
-                                    </div>
-                                </form>
-                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <form action="">
+                                <div class="form-group">
+                                    <label for="titulo">Titulo</label>
+                                    <input type="text" class="form-control" id="titulo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripcion</label>
+                                    <textarea class="mx-auto" name="" id="descripcion" cols="57"
+                                        rows="5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tags">Tags</label>
+                                    <input type="text" id="tags" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="file">Subir Archivos</label>
+                                    <input type="file" class="form-control-file" id="file"
+                                        style="visibility: hidden;">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Modificar</button>
+                                    <button class="btn btn-danger">Cancelar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
-
-</html>
+{%endblock%}

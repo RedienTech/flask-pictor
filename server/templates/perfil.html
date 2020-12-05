@@ -17,13 +17,13 @@
 
 {% block body %}
 
-<img src="img/guest.jpg" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;" srcset=""
+<img src="{{ url_for('static', filename='img/guest.jpg') }}" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;" srcset=""
     id="thumbnail">
 <h5 class="text-center">Alex Morgan</h5>
 
 <div class="ml-2 row mt-3">
     <div class="col-md-3">
-        <button class="btn btn-success mx-auto" onclick="location.href='imagen_crear.html'">Subir
+        <button class="btn btn-success mx-auto" onclick="location.href='/image/create'">Subir
             Imagen</button>
     </div>
     <div class="col-md-5">
@@ -70,15 +70,15 @@
 <div class="row mt-4 ml-2">
     <div class="col-md-4">
         <img src="{{ url_for('static', filename='img/test1.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='imagen_modificar.html'">
+            onclick="location.href='/image/modify'">
     </div>
     <div class="col-md-4">
-        <img src="img/test2.jpg" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='imagen_modificar.html'">
+        <img src="{{ url_for('static', filename='img/test2.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
+            onclick="location.href='/image/modify'">
     </div>
     <div class="col-md-4">
-        <img src="img/test3.jpg" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
-            onclick="location.href='imagen_modificar.html'">
+        <img src="{{ url_for('static', filename='img/test3.jpg') }}" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
+            onclick="location.href='/image/modify'">
     </div>
 </div>
 
