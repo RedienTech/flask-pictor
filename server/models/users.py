@@ -1,5 +1,7 @@
 import bcrypt
 from config.db import getDb
+import config.utils as utils
+import yagmail as yag
 
 class User:
     def __init__(self):
@@ -8,16 +10,22 @@ class User:
         self.errors = []
 
     def Registrar(self, nombre, usuario, clave, cclave, ccorreo, correo):
-        if clave != cclave or len(clave) < 6:
+
+        if not utils.isUsernameValid(usuario):
+            self.errors.append("El usuario no es valido")
+
+        if clave == cclave and not utils.isPasswordValid(clave):
             self.errors.append("Claves no coinciden o es demasiado corta")
-        if correo != ccorreo:
+
+        if correo == ccorreo and not utils.isEmailValid(correo):
             self.errors.append("Correos electronicos no coinciden")
+
         cur = self.mysql.cursor()
         cur.execute("SELECT usuario FROM usuarios WHERE correo = '" + correo + "';")
         existEmail = cur.fetchall()
-        print(existEmail)
         if len(existEmail) >= 1:
             self.errors.append("Ya existe un usuario registrado con este correo electronico")
+        
         cur.execute("SELECT usuario FROM usuarios WHERE usuario = '" + usuario + "';")
         existUser = cur.fetchall()
         if len(existUser) >= 1:
@@ -30,3 +38,7 @@ class User:
             self.mysql.commit()
             self.register = True
         self.mysql.close()
+    
+    def Activate(self, email, usuario):
+        #Aqui debemos colocar la activacion del Usuario
+        print("Activar Usuario")
