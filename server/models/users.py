@@ -14,10 +14,10 @@ class User:
         if not utils.isUsernameValid(usuario):
             self.errors.append("El usuario no es valido")
 
-        if clave == cclave and not utils.isPasswordValid(clave):
+        if clave != cclave or not utils.isPasswordValid(clave):
             self.errors.append("Claves no coinciden o es demasiado corta")
 
-        if correo == ccorreo and not utils.isEmailValid(correo):
+        if correo != ccorreo or not utils.isEmailValid(correo):
             self.errors.append("Correos electronicos no coinciden")
 
         cur = self.mysql.cursor()

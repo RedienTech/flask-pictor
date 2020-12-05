@@ -1,34 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styleM.css">
-</head>
-<body>
-    <div class="imagebackground">
-        <img src="img/tour-eiffel-5210486_1920.jpg" width="300" height="400" class="imagen">
-        <div class="contend">
-            <label>Autor</label>
-            <input type="text" value="Mariacmejj">
-            <br>
-            <br>
-            <label>Título</label>
-            <input type="text" value="Paris Eiffel Tower">
-            <br>
-            <br>
-            <label>Descripción</label>
-            <textarea>Historical Landmark in Paris at night</textarea>
-            <br>
-            <br>
-            <label>Tags</label>
-            <input type="text" placeholder="Tags" value="Paris, Eiffel">
-            <br>
-            <br>
-            <input type="submit" value="Cancelar" onclick="location.href='search.html'">
-            <input type="submit" value="Descargar" >
+{%extends 'layout.html'%}
+
+{%block menu%}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
+                Datos</a>
+        </li>
+    </ul>
+{%endblock%}
+
+{%block body%}       
+    <div class="row mt-4">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Descargar Imagen</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ url_for('static', filename='img/tour-eiffel-5210486_1920.jpg') }}" class="card-img-left img-thumbnail" alt=""
+                                    srcset="">
+                        </div>
+                        <div class="col-md-6">
+                            <form action="">
+
+                                <div class="form-group">
+                                    <h5>Titulo</h5>
+                                </div>
+                                <div class="form-group">
+                                    <h6>Autor</h6>
+                                </div>
+                                <div class="form-group">
+                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium ipsum molestiae culpa temporibus asperiores sunt adipisci excepturi dignissimos minima quam?</p>
+                                </div>
+                                <div class="form-group">
+                                    <ul>
+                                        <li>Tag #1</li>
+                                        <li>Tag #2</li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Descargar</button>
+                                    <button class="btn btn-danger">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+{%endblock%}
