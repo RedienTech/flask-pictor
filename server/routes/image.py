@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect, url_for
 import sys
 from flask import render_template
 
@@ -16,3 +16,12 @@ def ImagenCrear():
 @image.route('/modify/')
 def ImagenModificar():
     return render_template("imagen_modificar.html")
+
+@image.route('/search', methods = ["POST"])
+def BuscarImagen():
+    key = request.form["tag"]
+    return redirect(url_for('image.BuscarPorTag', busqueda = key))
+
+@image.route('/search/<busqueda>', methods=["GET"])
+def BuscarPorTag(busqueda):
+    return render_template('search.html', key = busqueda)

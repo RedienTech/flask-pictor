@@ -3,6 +3,8 @@ from routes.users import users
 from routes.image import image
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+
 
 
 @app.route('/')
@@ -12,10 +14,6 @@ def Index():
 @app.route('/perfil')
 def Perfil():
     return render_template("perfil.html")
-
-@app.route('/search')
-def Search():
-    return render_template("search.html")
 
 app.register_blueprint(image,url_prefix='/image')
 app.register_blueprint(users, url_prefix='/users')
