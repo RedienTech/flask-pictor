@@ -1,12 +1,18 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, flash, url_for, redirect
 import sys
 from flask import render_template
 from models.users import User
 
 users = Blueprint('users', __name__, template_folder='templates')
 
-@users.route('/signin')
+@users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
+    if request.method == 'POST':
+        loginUser = User()
+        usuario = request.form['usuario']
+        clave = request.form['clave']
+        loginUser.IniciarSesion(usuario, clave)
+        return "Hola"
     return render_template("login.html")
 
 @users.route('/signup', methods=["GET", "POST"])
@@ -21,8 +27,17 @@ def SignUp():
         newUser = User()
         newUser.Registrar(name, usuario, clave, cclave, cemail, email)
         if newUser.register:
-            return 'Registrado'
+            return render_template('activarUsuario.html')
         else:
-            return "No Registrado"
+            for error in newUser.errors:
+                flash(error)
+            return render_template('registerUser.html')
     else:       
         return render_template("registerUser.html")
+
+@users.route('/recover', methods=["GET", "POST"])
+def RecuperarPassword():
+    if request.method=="POST":
+        return "Recuperando"
+    else:
+        return render_template('recoverPassword.html')

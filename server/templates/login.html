@@ -14,28 +14,28 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-center">Inicia Sesion</h5>
-                <form name="frmReguister" class="mt-5" method="POST">
+                <form name="frmReguister" action="signin" class="mt-5" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-usuario">Usuario</label>
-                            <input type="text" class="form-control" id="input-correo">
+                            <input type="text" class="form-control" id="input-correo" name="usuario">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-ccorreo">Contraseña</label>
-                            <input type="text" class="form-control" id="input-ccorreo">
+                            <input type="password" class="form-control" id="input-ccorreo" name="clave">
                         </div>
                     </div>
                     <div class="row">
-                        <a class="btn btn-primary mx-auto mt-4" href="perfil.html">
+                        <button class="btn btn-primary mx-auto mt-4" type="submit">
                             Iniciar Sesion
-                        </a>
+                        </button>
                     </div>
                     <div class="row mt-4">
                         <span class="mx-auto">¿No tienes una cuenta? <a href="/users/signup">Registrate</a></span>
                         <p class="text-center mx-auto"><span class="mx-auto">O</span> <br> <a class="text-center"
-                                href="recoverPassword.html">Recupera Contraseña</a></p>
+                                href="/users/recover">Recupera Contraseña</a></p>
                     </div>
                 </form>
             </div>

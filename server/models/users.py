@@ -1,5 +1,7 @@
 import bcrypt
 from config.db import getDb
+import config.utils as utils
+import yagmail as yag
 
 class User:
     def __init__(self):
@@ -8,16 +10,22 @@ class User:
         self.errors = []
 
     def Registrar(self, nombre, usuario, clave, cclave, ccorreo, correo):
-        if clave != cclave or len(clave) < 6:
-            self.errors.append("Claves no coinciden o es demasiado corta")
-        if correo != ccorreo:
-            self.errors.append("Correos electronicos no coinciden")
+
+        if not utils.isUsernameValid(usuario):
+            self.errors.append("El usuario no es valido")
+
+        if clave != cclave or not utils.isPasswordValid(clave):
+            self.errors.append("Claves no coinciden o no son validas")
+
+        if correo != ccorreo or not utils.isEmailValid(correo):
+            self.errors.append("Correos electronicos no coinciden o son invalidos")
+
         cur = self.mysql.cursor()
         cur.execute("SELECT usuario FROM usuarios WHERE correo = '" + correo + "';")
         existEmail = cur.fetchall()
-        print(existEmail)
         if len(existEmail) >= 1:
             self.errors.append("Ya existe un usuario registrado con este correo electronico")
+        
         cur.execute("SELECT usuario FROM usuarios WHERE usuario = '" + usuario + "';")
         existUser = cur.fetchall()
         if len(existUser) >= 1:
@@ -25,8 +33,24 @@ class User:
         
         if len(self.errors) < 1:
             password = clave.encode(encoding='UTF-8',errors='strict')
-            clave = bcrypt.hashpw(password, b'$2b$12$CSEMJ59OZhiDLX1ke9x7C.')
-            cur.execute('INSERT INTO usuarios (nombre, usuario, clave, correo) VALUES (%s, %s, %s, %s)', (nombre, usuario, clave, correo))
+            clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
+            cur.execute("INSERT INTO usuarios (nombre, usuario, contraseña, correo) VALUES ('%s', '%s', '%s', '%s');" % (nombre, usuario, clave, correo))
             self.mysql.commit()
             self.register = True
+            
         self.mysql.close()
+    
+    def IniciarSesion(self, usuario, clave):
+        cur = self.mysql.cursor()
+        cur.execute("SELECT usuario FROM usuarios WHERE usuario = '" + usuario + "';")
+        existUser = cur.fetchall()
+        if len(existUser) >= 1:
+            cur.execute("SELECT contraseña FROM usuarios WHERE usuario = '" + usuario + "';")
+            password = cur.fetchall()
+            trueClave = password[0][0]
+            print(utils.comparePassword(clave, trueClave))
+            
+    
+    def Activate(self, email, usuario):
+        #Aqui debemos colocar la activacion del Usuario
+        print("Activar Usuario")

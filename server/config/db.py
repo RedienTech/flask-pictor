@@ -1,5 +1,8 @@
-import mysql.connector
+import sqlite3
 
 def getDb():
-    miConexion = mysql.connector.connect( host='localhost', user= 'root', passwd='', db='pictor')
-    return miConexion
+    try:
+        miConexion = sqlite3.connect('server/config/pictor.db')
+        return miConexion
+    except:
+        print("Error en la conexion")
