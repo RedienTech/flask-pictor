@@ -5,6 +5,7 @@ import yagmail as yag
 
 class User:
     def __init__(self):
+        
         self.register = False
         self.mysql = getDb()
         self.errors = []
@@ -50,7 +51,6 @@ class User:
             trueClave = password[0][0]
             print(utils.comparePassword(clave, trueClave))
             
-    
     def Activate(self, email, usuario):
         #Aqui debemos colocar la activacion del Usuario
         print("Activar Usuario")
