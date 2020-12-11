@@ -2,6 +2,7 @@ from flask import Blueprint, request, flash, url_for, redirect
 import sys
 from flask import render_template
 from models.users import User
+import yagmail as yagmail
 
 users = Blueprint('users', __name__, template_folder='templates')
 
@@ -27,6 +28,8 @@ def SignUp():
         newUser = User()
         newUser.Registrar(name, usuario, clave, cclave, cemail, email)
         if newUser.register:
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta')
             return render_template('activarUsuario.html')
         else:
             for error in newUser.errors:
