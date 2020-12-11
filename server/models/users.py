@@ -7,7 +7,7 @@ class User:
     def __init__(self):
         
         self.register = False
-        self.mysql = getDb()
+        self.mydb = getDb()
         self.errors = []
 
     def Registrar(self, nombre, usuario, clave, cclave, ccorreo, correo):
@@ -21,7 +21,8 @@ class User:
         if correo != ccorreo or not utils.isEmailValid(correo):
             self.errors.append("Correos electronicos no coinciden o son invalidos")
 
-        cur = self.mysql.cursor()
+        
+        cur = self.mydb.cursor()
         cur.execute("SELECT usuario FROM usuarios WHERE correo = '" + correo + "';")
         existEmail = cur.fetchall()
         if len(existEmail) >= 1:
@@ -36,13 +37,13 @@ class User:
             password = clave.encode(encoding='UTF-8',errors='strict')
             clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
             cur.execute("INSERT INTO usuarios (nombre, usuario, contraseña, correo) VALUES ('%s', '%s', '%s', '%s');" % (nombre, usuario, clave, correo))
-            self.mysql.commit()
+            self.mydb.commit()
             self.register = True
             
-        self.mysql.close()
+        self.mydb.close()
     
     def IniciarSesion(self, usuario, clave):
-        cur = self.mysql.cursor()
+        cur = self.mydb.cursor()
         cur.execute("SELECT usuario FROM usuarios WHERE usuario = '" + usuario + "';")
         existUser = cur.fetchall()
         if len(existUser) >= 1:
