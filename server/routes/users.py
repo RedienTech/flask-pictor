@@ -1,10 +1,14 @@
-from flask import Blueprint, request, flash, url_for, redirect
+from flask import Blueprint, request, flash, url_for, redirect, session
 import sys
 from flask import render_template
 from models.users import User
 import yagmail as yagmail
 
 users = Blueprint('users', __name__, template_folder='templates')
+
+@users.route('/perfil')
+def Perfil():
+    return render_template("perfil.html")
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
@@ -13,7 +17,12 @@ def InicioSesion():
         usuario = request.form['usuario']
         clave = request.form['clave']
         loginUser.IniciarSesion(usuario, clave)
-        return "Hola"
+        if loginUser.logged:
+            session["username"] = loginUser.user
+            return render_template("perfil.html")
+        else:
+            flash("Error en la combinacion de usuario y contraseña")
+            return redirect(url_for('users.Perfil'))
     return render_template("login.html")
 
 @users.route('/signup', methods=["GET", "POST"])

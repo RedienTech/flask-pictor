@@ -4,6 +4,7 @@ import bcrypt
 
 pass_reguex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^\W_]{8,}$"
 user_reguex = "^[a-zA-Z0-9_.-]+$"
+image_reguex = "^(?i)\.(jpg|png|gif)$"
 F_ACTIVE = 'ACTIVE'
 F_INACTIVE = 'INACTIVE'
 EMAIL_APP = 'EMAIL_APP'
@@ -22,6 +23,8 @@ def isEmailValid(email):
 
     return is_valid
 
+def isValidImage(name):
+    return re.search(image_reguex, name)
 
 def isUsernameValid(user):
     if re.search(user_reguex, user):

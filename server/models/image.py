@@ -12,8 +12,6 @@ def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):
     except Error:
         print(Error)
 
-
-
 def sql_select_imagenes(id_usuario):
     query="select * from imagenes where id="+id_usuario+";"
     try:

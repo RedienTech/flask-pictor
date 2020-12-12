@@ -9,6 +9,8 @@ class User:
         self.register = False
         self.mydb = getDb()
         self.errors = []
+        self.logged = False
+        self.user = ""
 
     def Registrar(self, nombre, usuario, clave, cclave, ccorreo, correo):
 
@@ -50,7 +52,9 @@ class User:
             cur.execute("SELECT contraseña FROM usuarios WHERE usuario = '" + usuario + "';")
             password = cur.fetchall()
             trueClave = password[0][0]
-            print(utils.comparePassword(clave, trueClave))
+            if utils.comparePassword(clave, trueClave):
+                self.logged = True
+                self.user = usuario
             
     def Activate(self, email, usuario):
         #Aqui debemos colocar la activacion del Usuario

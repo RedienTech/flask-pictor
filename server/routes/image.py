@@ -1,6 +1,9 @@
-from flask import Blueprint, request, redirect, url_for
-import sys
+from flask import Blueprint, request, redirect, url_for, current_app
+from datetime import date, datetime
+import os
 from flask import render_template
+import config.utils as utils
+from werkzeug.utils import secure_filename
 
 
 image = Blueprint('image', __name__, template_folder='templates')
@@ -9,15 +12,26 @@ image = Blueprint('image', __name__, template_folder='templates')
 def ImagenDescargar():
     return render_template("imagen_descargar.html")
 
-@image.route('/create/')
+@image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
-    return render_template("imagen_crear.html")
+    if request.method == "POST":
+        usuario = "AlexMorgan"
+        titulo = request.form["titulo"]
+        #descripcion = request.form["descripcion"]
+        tags = request.form["tags"]
+        file = request.files["file"]
+        filename = secure_filename(str(date.today()) + "-" + str(datetime.now().hour) + str(datetime.now().minute) + str(datetime.now().second) + "-" + usuario + "-" + file.filename)
+        #file.save(os.path.join(UPLOAD_FOLDER, filename))
+        file.save(os.path.join(os.getcwd() + "\server\\files\images", filename))
+        return "Hola"
+    else:
+        return render_template("imagen_crear.html")
 
 @image.route('/modify/')
 def ImagenModificar():
     return render_template("imagen_modificar.html")
 
-@image.route('/search', methods = ["POST"])
+@image.route('/search/', methods = ["POST"])
 def BuscarImagen():
     key = request.form["tag"]
     return redirect(url_for('image.BuscarPorTag', busqueda = key))
