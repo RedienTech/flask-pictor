@@ -38,7 +38,7 @@ class User:
         if len(self.errors) < 1:
             password = clave.encode(encoding='UTF-8',errors='strict')
             clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
-            cur.execute("INSERT INTO usuarios (nombre, usuario, contraseña, correo) VALUES ('%s', '%s', '%s', '%s');" % (nombre, usuario, clave, correo))
+            cur.execute("INSERT INTO usuarios (nombre, usuario, clave, correo) VALUES ('%s', '%s', '%s', '%s');" % (nombre, usuario, clave, correo))
             self.mydb.commit()
             self.register = True
             
@@ -49,13 +49,21 @@ class User:
         cur.execute("SELECT usuario FROM usuarios WHERE usuario = '" + usuario + "';")
         existUser = cur.fetchall()
         if len(existUser) >= 1:
-            cur.execute("SELECT contraseña FROM usuarios WHERE usuario = '" + usuario + "';")
+            cur.execute("SELECT clave FROM usuarios WHERE usuario = '" + usuario + "';")
             password = cur.fetchall()
             trueClave = password[0][0]
             if utils.comparePassword(clave, trueClave):
                 self.logged = True
                 self.user = usuario
             
-    def Activate(self, email, usuario):
-        #Aqui debemos colocar la activacion del Usuario
-        print("Activar Usuario")
+    def Activate(self, payload):
+        activateUser = payload["user"]
+        cur = self.mydb.cursor()
+        cur.execute("SELECT id, activo FROM usuarios WHERE usuario = '%s';" % activateUser)
+        existUser = cur.fetchone()
+        if existUser[1] == 0:
+            cur.execute("UPDATE usuarios SET activo = 1 WHERE id = %s;" % existUser[0])
+            self.mydb.commit()
+            return True
+        else:
+            return False
