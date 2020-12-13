@@ -1,5 +1,6 @@
-from flask import Blueprint, request, redirect, url_for, current_app
+from flask import Blueprint, request, redirect, url_for, current_app, flash, session
 from datetime import date, datetime
+import models.image as img
 import os
 from flask import render_template
 import config.utils as utils
@@ -14,16 +15,20 @@ def ImagenDescargar():
 
 @image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
+    if not utils.isAuthenticated():
+        flash("Por favor inicia sesion antes de acceder a la pagina")
+        return redirect(url_for('users.InicioSesion'))
     if request.method == "POST":
-        usuario = "AlexMorgan"
+        usuario = session["username"]
         titulo = request.form["titulo"]
-        #descripcion = request.form["descripcion"]
+        descripcion = request.form["descripcion"]
         tags = request.form["tags"]
         file = request.files["file"]
         filename = secure_filename(str(date.today()) + "-" + str(datetime.now().hour) + str(datetime.now().minute) + str(datetime.now().second) + "-" + usuario + "-" + file.filename)
-        #file.save(os.path.join(UPLOAD_FOLDER, filename))
-        file.save(os.path.join(os.getcwd() + "\server\\files\images", filename))
-        return "Hola"
+        ruta = os.path.join(os.getcwd() + "\server\\files\images", filename)
+        file.save(ruta)
+        img.sql_insert_imagenes(titulo, descripcion, ruta, tags, utils.getCurrentUser().get("id"))
+        return redirect(url_for('users.Perfil'))
     else:
         return render_template("imagen_crear.html")
 

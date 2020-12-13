@@ -12,4 +12,4 @@ class FormRegistro(FlaskForm):
 
 class FormInicio(FlaskForm):
     usuario = StringField('usuario', validators=[DataRequired()])
-    password = PasswordField('clave', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])

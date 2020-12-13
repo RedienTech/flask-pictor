@@ -14,7 +14,8 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-center">Inicia Sesion</h5>
-                <form name="frmReguister" action="signin" class="mt-5" method="POST">
+                <form name="frmReguister" action="/users/signin" class="mt-5" method="POST">
+                    {{ form.csrf_token }}
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-usuario">Usuario</label>

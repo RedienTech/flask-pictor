@@ -4,17 +4,21 @@ from flask import render_template
 from config.forms import FormRegistro, FormInicio
 from models.users import User
 import config.tokens as token
+from config.utils import isAuthenticated
 import yagmail as yagmail
 
-users = Blueprint('users', __name__, template_folder='templates')
-
+users = Blueprint('users', __name__, template_folder='templates')        
+        
 @users.route('/perfil')
 def Perfil():
-    return render_template("perfil.html", usuario = "Alex Morgan")
+    if not isAuthenticated():
+        flash("Por favor inicia sesion antes de acceder a la pagina")
+        return redirect(url_for('users.InicioSesion'))
+    return render_template("perfil.html", usuario = session["username"])
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
-    if request.method == 'POST':
+    if request.method == "POST":
         form = FormInicio(request.form)
         if form.validate_on_submit():
             loginUser = User()
@@ -22,9 +26,10 @@ def InicioSesion():
             clave = form.password.data
             loginUser.IniciarSesion(usuario, clave)
             if loginUser.logged:
-                session["username"] = loginUser.user
-                return render_template("perfil.html", usuario = session["username"])
+                session["username"] = usuario
+                return redirect(url_for('users.Perfil'))
             else:
+                print("Aqui")
                 flash("Error en la combinacion de usuario y contraseña")
                 return render_template("login.html")
     return render_template("login.html", form = FormInicio())
@@ -56,6 +61,9 @@ def SignUp():
 
 @users.route('/activate', methods=['GET'])
 def ActivarUsuario():
+    if not isAuthenticated():
+        flash("Por favor inicia sesion antes de acceder a la pagina")
+        return redirect(url_for('users.InicioSesion'))
     tok = request.args.get("token")
     payload = token.decodeToken(tok)
     activatingUser = User()
