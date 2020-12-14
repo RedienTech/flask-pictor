@@ -15,9 +15,6 @@ def ImagenDescargar():
 
 @image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
-    if not utils.isAuthenticated():
-        flash("Por favor inicia sesion antes de acceder a la pagina")
-        return redirect(url_for('users.InicioSesion'))
     if request.method == "POST":
         usuario = session["username"]
         titulo = request.form["titulo"]

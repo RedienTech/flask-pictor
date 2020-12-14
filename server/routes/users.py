@@ -1,4 +1,4 @@
-from flask import Blueprint, request, flash, url_for, redirect, session, g
+from flask import Blueprint, request, flash, url_for, redirect, session, g, current_app
 from functools import wraps
 import sys
 from flask import render_template
@@ -20,7 +20,10 @@ def login_required(func):
     return required()
 
 @users.route('/perfil')
+@login_required
 def Perfil():
+    if g.user is None:
+        return redirect(url_for('users.InicioSesion'))
     return render_template("perfil.html", usuario = g.user["nombre"])
 
 @users.route('/signin', methods=['GET', 'POST'])
