@@ -16,9 +16,6 @@ REQ_FORGOT = 'REQ_FORGOT'
 U_UNCONFIRMED = 'UNCONFIRMED'
 U_CONFIRMED = 'CONFIRMED'
 
-def isAuthenticated():
-    return "username" in session
-
 def getCurrentUser():
     user = session["username"]
     try:

@@ -1,20 +1,27 @@
-from flask import Blueprint, request, flash, url_for, redirect, session
+from flask import Blueprint, request, flash, url_for, redirect, session, g
+from functools import wraps
 import sys
 from flask import render_template
 from config.forms import FormRegistro, FormInicio
 from models.users import User
 import config.tokens as token
-from config.utils import isAuthenticated
+from config.utils import getCurrentUser
 import yagmail as yagmail
 
-users = Blueprint('users', __name__, template_folder='templates')        
-        
+users = Blueprint('users', __name__, template_folder='templates')
+
+def login_required(func):
+    @wraps(func)
+    def required(*args):
+        if g.user is not None:
+            return func(*args)
+        else:
+            return redirect(url_for('users.InicioSesion'))
+    return required()
+
 @users.route('/perfil')
 def Perfil():
-    if not isAuthenticated():
-        flash("Por favor inicia sesion antes de acceder a la pagina")
-        return redirect(url_for('users.InicioSesion'))
-    return render_template("perfil.html", usuario = session["username"])
+    return render_template("perfil.html", usuario = g.user["nombre"])
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
@@ -32,7 +39,10 @@ def InicioSesion():
                 print("Aqui")
                 flash("Error en la combinacion de usuario y contraseña")
                 return render_template("login.html")
-    return render_template("login.html", form = FormInicio())
+    else:
+        if g.user is not None:
+            return redirect(url_for('Index'))
+        return render_template("login.html", form = FormInicio())
 
 @users.route('/signup', methods=["GET", "POST"])
 def SignUp():
@@ -56,14 +66,13 @@ def SignUp():
                 for error in newUser.errors:
                     flash(error)
                 return render_template('registerUser.html', form = FormRegistro())
-    else:       
+    else:
+        if g.user is not None:
+            return redirect(url_for('Index'))       
         return render_template("registerUser.html", form = FormRegistro())
 
 @users.route('/activate', methods=['GET'])
 def ActivarUsuario():
-    if not isAuthenticated():
-        flash("Por favor inicia sesion antes de acceder a la pagina")
-        return redirect(url_for('users.InicioSesion'))
     tok = request.args.get("token")
     payload = token.decodeToken(tok)
     activatingUser = User()
@@ -78,3 +87,8 @@ def RecuperarPassword():
         return "Recuperando"
     else:
         return render_template('recoverPassword.html')
+
+@users.route('/logout', methods = ["GET"])
+def LogOut():
+    session.pop("username", None)
+    return redirect(url_for('users.InicioSesion'))
