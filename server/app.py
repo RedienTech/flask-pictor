@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session, g
+from functools import wraps
 from config.utils import getCurrentUser
 from config.db import getDb
 from routes.users import users
@@ -9,10 +10,9 @@ app.config['SECRET_KEY'] = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0
 app.config["UPLOAD_FOLDER"] = ".\\files\images"
 app.app_context()
 
-
 @app.route('/')
 def Index():
-    return render_template("index.html")
+    return render_template("index.html", logged = g.user is not None)
 
 @app.before_request
 def before_request():

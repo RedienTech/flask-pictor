@@ -1,5 +1,6 @@
 from flask import Blueprint, request, flash, url_for, redirect, session, g, current_app
 from functools import wraps
+import models.image as img
 import sys
 from flask import render_template
 from config.forms import FormRegistro, FormInicio
@@ -13,18 +14,22 @@ users = Blueprint('users', __name__, template_folder='templates')
 def login_required(func):
     @wraps(func)
     def required(*args):
-        if g.user is not None:
-            return func(*args)
-        else:
-            return redirect(url_for('users.InicioSesion'))
+        with current_app.app_context():
+            if g.user is not None:
+                return func(*args)
+            else:
+                return redirect(url_for('users.InicioSesion'))
     return required()
 
 @users.route('/perfil')
-@login_required
+#@login_required
 def Perfil():
     if g.user is None:
         return redirect(url_for('users.InicioSesion'))
-    return render_template("perfil.html", usuario = g.user["nombre"])
+    images = img.sql_select_imagenes(g.user["id"])
+    for image in images:
+        print(image)
+    return render_template("perfil.html", usuario = g.user["nombre"], images = images)
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
@@ -41,7 +46,7 @@ def InicioSesion():
             else:
                 print("Aqui")
                 flash("Error en la combinacion de usuario y contraseña")
-                return render_template("login.html")
+                return redirect(url_for('users.InicioSesion'))
     else:
         if g.user is not None:
             return redirect(url_for('Index'))

@@ -22,16 +22,18 @@ def ImagenCrear():
         tags = request.form["tags"]
         file = request.files["file"]
         filename = secure_filename(str(date.today()) + "-" + str(datetime.now().hour) + str(datetime.now().minute) + str(datetime.now().second) + "-" + usuario + "-" + file.filename)
-        ruta = os.path.join(os.getcwd() + "\server\\files\images", filename)
+        ruta = os.path.join(os.getcwd() + "\server\static\\files\images", filename)
         file.save(ruta)
-        img.sql_insert_imagenes(titulo, descripcion, ruta, tags, utils.getCurrentUser().get("id"))
+        img.sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, utils.getCurrentUser().get("id"))
         return redirect(url_for('users.Perfil'))
     else:
         return render_template("imagen_crear.html")
 
-@image.route('/modify/')
-def ImagenModificar():
-    return render_template("imagen_modificar.html")
+@image.route('/modify/<int:id>')
+def ImagenModificar(id):
+    image = img.sql_select_image(id)
+    print(image)
+    return render_template("imagen_modificar.html", image = image)
 
 @image.route('/search/', methods = ["POST"])
 def BuscarImagen():

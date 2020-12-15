@@ -1,8 +1,8 @@
 from config.db import getDb
 from sqlite3 import Error
 
-def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):
-    query="INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES ('"+titulo+"','"+descripcion+"','"+ruta+"','"+tags+"',"+str(id_usuario)+");"       
+def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario):
+    query="INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario) VALUES ('"+titulo+"','"+descripcion+"','"+ruta+"','"+filename+"','"+tags+"',"+str(id_usuario)+");"       
     try:
         con = getDb()
         cursorObj = con.cursor()
@@ -12,15 +12,26 @@ def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):
     except Error:
         print(Error)
 
+def sql_select_image(id):
+    try:
+        con = getDb()
+        cur = con.cursor()
+        cur.execute("SELECT titulo, descripcion, tags, filename FROM imagenes WHERE id = %s" % id)
+        image = cur.fetchone()
+        return image
+    except Error:
+        print(Error)
+
 def sql_select_imagenes(id_usuario):
-    query="SELECT * FROM imagenes WHERE id="+id_usuario+";"
+    query="SELECT * FROM imagenes WHERE id_usuario = "+str(id_usuario) +";"
+    print(query)
     try:
         con = getDb()
         cursorObj = con.cursor()
         cursorObj.execute(query)
-        productos=cursorObj.fetchall()
+        imagenes=cursorObj.fetchall()
         con.close()
-        return productos
+        return imagenes
     except Error:
         print(Error)
 
