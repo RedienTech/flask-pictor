@@ -99,12 +99,3 @@ def RecuperarPassword():
 def LogOut():
     session.pop("username", None)
     return redirect(url_for('users.InicioSesion'))
-
-@users.before_request #antes de realziar cualquier peticion
-def load_logged_in_user():
-    user_id=session.get('username')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = getDb().execute('SELECT * FROM Usuarios WHERE usuario = ?',(user_id,)).fetchone()

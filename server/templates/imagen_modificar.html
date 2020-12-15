@@ -25,27 +25,29 @@
                     <h5 class="card-title text-center">Modificar Imagen</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="/static/files/images/{{image[3]}}" class="card-img-left img-thumbnail" alt=""
+                            <img src="/static/files/images/{{image[4]}}" class="card-img-left img-thumbnail" alt=""
                                     srcset="">
                         </div>
                         <div class="col-md-6">
-                            <form action="">
+                            <form action="/image/modify/{{image[0]}}" method="POST">
                                 <div class="form-group">
                                     <label for="titulo">Titulo</label>
-                                    <input type="text" class="form-control" id="titulo" value="{{image[0]}}">
+                                    <input type="text" class="form-control" name="titulo" id="titulo" value="{{image[1]}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="descripcion">Descripcion</label>
-                                    <textarea class="mx-auto" name="" id="descripcion" cols="57"
-                                        rows="5">{{image[1]}}</textarea>
+                                    <textarea class="mx-auto form-control" name="descripcion" id="descripcion" cols="57"
+                                        rows="5">{{image[2]}}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="tags">Tags</label>
-                                    <input type="text" id="tags" class="form-control" value="{{image[2]}}">
+                                    <input type="text" id="tags" class="form-control" name="tags" value="{{image[3]}}">
                                 </div>
                                 <div class="form-group">
-                                    <button class="btn btn-primary">Modificar</button>
-                                    <button class="btn btn-danger">Cancelar</button>
+                                    <button class="btn btn-success" type="submit">Modificar</button>
+                                    <a href="/users/perfil" class="btn btn-primary">Cancelar</a>
+                                    <a href="/image/delete/{{image[0]}}" class="btn btn-danger">Eliminar</a>
+                                    <a href="/image/download/{{image[0]}}" class="btn btn-info">Descargar</a>
                                 </div>
                             </form>
                         </div>
