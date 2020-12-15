@@ -27,8 +27,6 @@ def Perfil():
     if g.user is None:
         return redirect(url_for('users.InicioSesion'))
     images = img.sql_select_imagenes(g.user["id"])
-    for image in images:
-        print(image)
     return render_template("perfil.html", usuario = g.user["nombre"], images = images)
 
 @users.route('/signin', methods=['GET', 'POST'])
@@ -44,7 +42,6 @@ def InicioSesion():
                 session["username"] = usuario
                 return redirect(url_for('users.Perfil'))
             else:
-                print("Aqui")
                 flash("Error en la combinacion de usuario y contraseña")
                 return redirect(url_for('users.InicioSesion'))
     else:
