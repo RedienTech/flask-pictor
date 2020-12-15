@@ -7,20 +7,21 @@ from models.users import User
 import config.tokens as token
 from config.utils import getCurrentUser
 import yagmail as yagmail
+from config.db import getDb
 
 users = Blueprint('users', __name__, template_folder='templates')
 
-def login_required(func):
+'''def login_required(func):
     @wraps(func)
     def required(*args):
         if g.user is not None:
             return func(*args)
         else:
             return redirect(url_for('users.InicioSesion'))
-    return required()
+    return required()'''
 
 @users.route('/perfil')
-@login_required
+#@login_required
 def Perfil():
     if g.user is None:
         return redirect(url_for('users.InicioSesion'))
@@ -95,3 +96,12 @@ def RecuperarPassword():
 def LogOut():
     session.pop("username", None)
     return redirect(url_for('users.InicioSesion'))
+
+@users.before_request #antes de realziar cualquier peticion
+def load_logged_in_user():
+    user_id=session.get('username')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = getDb().execute('SELECT * FROM Usuarios WHERE usuario = ?',(user_id,)).fetchone()
