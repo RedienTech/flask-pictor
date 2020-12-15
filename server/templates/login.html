@@ -14,17 +14,18 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title text-center">Inicia Sesion</h5>
-                <form name="frmReguister" action="signin" class="mt-5" method="POST">
+                <form name="frmReguister" action="/users/signin" class="mt-5" method="POST">
+                    {{ form.csrf_token }}
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-usuario">Usuario</label>
-                            <input type="text" class="form-control" id="input-correo" name="usuario">
+                            {{form.usuario(class="form-control", id="input-usuario")}}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="input-ccorreo">Contraseña</label>
-                            <input type="password" class="form-control" id="input-ccorreo" name="clave">
+                            <label for="input-password">Contraseña</label>
+                            {{form.password(class="form-control", id="input-password")}}
                         </div>
                     </div>
                     <div class="row">
