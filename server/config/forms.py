@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, BooleanField, StringField, PasswordField
 from wtforms.validators import DataRequired
+from wtforms.widgets import TextArea
 
 class FormRegistro(FlaskForm):
     nombre = StringField('nombre', validators=[DataRequired()])
@@ -13,3 +14,8 @@ class FormRegistro(FlaskForm):
 class FormInicio(FlaskForm):
     usuario = StringField('usuario', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
+
+class FormModificar(FlaskForm):
+    titulo = StringField('titulo', validators=[DataRequired()])
+    descripcion = StringField('descripcion', validators=[DataRequired()], widget=TextArea())
+    tags = StringField('tags', validators=[DataRequired()])

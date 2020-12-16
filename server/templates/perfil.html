@@ -68,18 +68,15 @@
 </div>
 
 <div class="row mt-4 ml-2">
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test1.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='/image/modify'">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test2.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='/image/modify'">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test3.jpg') }}" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
-            onclick="location.href='imagen_modificar.html'">
-    </div>
+    {%if images%}
+        {%for img in images%}
+            <div class="col-md-4">
+                <a href="/image/modify/{{img[0]}}">
+                    <img src="/static/files/images/{{img[7]}}" alt="" class="img-thumbnail rounded" srcset="">
+                </a>
+            </div>
+        {%endfor%}
+    {%endif%}
 </div>
 
 <div class="row mt-4 text-center">
