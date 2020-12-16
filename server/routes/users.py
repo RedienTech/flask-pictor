@@ -64,7 +64,7 @@ def SignUp():
             if newUser.register:
                 tok = token.createToken(usuario).decode()
                 yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:3000/users/activate?token='+tok)
+                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+tok)
                 return render_template('activarUsuario.html')
             else:
                 for error in newUser.errors:
@@ -97,11 +97,11 @@ def LogOut():
     session.pop("username", None)
     return redirect(url_for('users.InicioSesion'))
 
-@users.before_request #antes de realziar cualquier peticion
+'''@users.before_request #antes de realziar cualquier peticion
 def load_logged_in_user():
     user_id=session.get('username')
 
     if user_id is None:
         g.user = None
     else:
-        g.user = getDb().execute('SELECT * FROM Usuarios WHERE usuario = ?',(user_id,)).fetchone()
+        g.user = getDb().execute('SELECT * FROM Usuarios WHERE usuario = ?',(user_id,)).fetchone()'''

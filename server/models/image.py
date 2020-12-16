@@ -2,11 +2,11 @@ from config.db import getDb
 from sqlite3 import Error
 
 def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):
-    query="INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES ('"+titulo+"','"+descripcion+"','"+ruta+"','"+tags+"',"+str(id_usuario)+");"       
+    #query="INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES ('"+titulo+"','"+descripcion+"','"+ruta+"','"+tags+"',"+str(id_usuario)+");"       
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES (?,?,?,?,?);",(titulo,descripcion,ruta,tags,str(id_usuario)))
         con.commit()
         con.close()
     except Error:
@@ -17,7 +17,7 @@ def sql_select_imagenes(id_usuario):
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("SELECT * FROM imagenes WHERE id= ? ;",(id_usuario,))
         productos=cursorObj.fetchall()
         con.close()
         return productos
@@ -29,7 +29,7 @@ def sql_edit_imagen(id, titulo, descripcion, ruta, tags, id_usuario):
     try:
         con = getDb()
         cursorObj=con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("UPDATE imagenes SET titulo = ?, descripcion=?, ruta=?, tags=?, id_usuario= ? WHERE id =?;",(titulo,descripcion,ruta,tags,id_usuario,id))
         con.commit()
         con.close()
     except Error:
@@ -40,7 +40,7 @@ def sql_delete_imagen(id):
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("DELETE FROM imagenes WHERE id=?;",(id,))
         con.commit()
         con.close()
     except Error:
