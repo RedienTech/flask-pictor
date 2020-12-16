@@ -3,10 +3,10 @@
 {%block menu%}
 <ul class="navbar-nav ml-auto">
     <li class="nav-item active">
-        <a class="nav-link" href="{{url_for('login')}}">Iniciar Sesion<span class="sr-only"></span></a>
+        <a class="nav-link" href="/users/signin">Iniciar Sesion<span class="sr-only"></span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="{{url_for('registerUser')}}">Registrarse<span class="sr-only"></span></a>
+        <a class="nav-link" href="/users/signup">Registrarse<span class="sr-only"></span></a>
     </li>
 </ul>
 {%endblock%}
@@ -37,7 +37,7 @@
     </div>    
         <div class="row mt-4">
                         <span class="mx-auto"><a
-                                href="{{url_for('login')}}">Inicio de Sesión</a></span>
+                                href="/users/signin">Inicio de Sesión</a></span>
                        </div>   
                 </form>
             </div>

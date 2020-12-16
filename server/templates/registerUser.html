@@ -3,7 +3,7 @@
 {%block menu%}
 <ul class="navbar-nav ml-auto">
     <li class="nav-item active">
-        <a class="nav-link" href="/signin">Iniciar Sesion<span class="sr-only"></span></a>
+        <a class="nav-link" href="{{ url_for('users.InicioSesion') }}">Iniciar Sesion<span class="sr-only"></span></a>
     </li>
 </ul>
 {%endblock%}
@@ -16,35 +16,36 @@
                 <h5 class="card-title text-center">Registrate</h5>
                 <form name="frmReguister" class="mt-5" method="POST" action="/users/signup">
                     <div class="row">
+                        {{ form.csrf_token }}
                         <div class="col-md-6">
                             <label for="input-name">Nombre</label>
-                            <input type="text" id="input-name" class="form-control" name="name">
+                            {{form.nombre(class="form-control", id="input-name")}}
                         </div>
                         <div class="col-md-6">
                             <label for="input-usuario">Usuario</label>
-                            <input type="text" id="input-usuario" class="form-control" name="user">
+                            {{form.usuario(class="form-control", id="input-usuario")}}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="input-clave">Clave</label>
-                            <input type="password" id="input-clave" class="form-control" name="password">
+                            {{form.password(class="form-control", id="input-clave")}}
                         </div>
                         <div class="col-md-6">
                             <label for="input-cclave">Confirmar Clave</label>
-                            <input type="password" id="input-cclave" class="form-control" name="cpassword">
+                            {{form.confirmPassword(class="form-control", id="input-cclave")}}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-correo">Correo</label>
-                            <input type="text" class="form-control" id="input-correo" name="email">
+                            {{form.email(class="form-control", id="input-correo")}}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-ccorreo">Confirmar Correo</label>
-                            <input type="text" class="form-control" id="input-ccorreo" name="cemail">
+                            {{form.confirmEmail(class="form-control", id="input-ccorreo")}}
                         </div>
                     </div>
                     <div class="row">
@@ -53,7 +54,7 @@
                         </button>
                     </div>
                     <div class="row mt-4">
-                        <span class="mx-auto">¿Ya tienes una cuenta? <a href="signin">Inicia
+                        <span class="mx-auto">¿Ya tienes una cuenta? <a href="/users/signin">Inicia
                                 Sesion</a></span>
                     </div>
                 </form>

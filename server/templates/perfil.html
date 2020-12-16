@@ -6,7 +6,7 @@
         <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
+        <a class="nav-link" href="/users/logout">Cerrar Sesion</a>
     </li>
     <li class="nav-item">
         <a class="nav-link d" href="#" tabindex="-1" onclick="location.href='ddv.html'">Actualizar
@@ -17,9 +17,9 @@
 
 {% block body %}
 
-<img src="{{ url_for('static', filename='img/guest.jpg') }}" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;" srcset=""
+<img src="{{ url_for('static', filename='img/guest.png') }}" alt="" class="mx-auto d-block rounded-circle mt-2" style="width: 200px;" srcset=""
     id="thumbnail">
-<h5 class="text-center">Alex Morgan</h5>
+<h5 class="text-center">{{usuario}}</h5>
 
 <div class="ml-2 row mt-3">
     <div class="col-md-3">
@@ -68,18 +68,15 @@
 </div>
 
 <div class="row mt-4 ml-2">
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test1.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='/image/modify'">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test2.jpg') }}" alt="" class="img-thumbnail rounded" srcset=""
-            onclick="location.href='/image/modify'">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test3.jpg') }}" alt="" class="img-thumbnail rounded" style="height: 220px;" srcset=""
-            onclick="location.href='imagen_modificar.html'">
-    </div>
+    {%if images%}
+        {%for img in images%}
+            <div class="col-md-4 col-sm-12">
+                <a href="/image/modify/{{img[0]}}" class="mx-auto">
+                    <img src="/static/files/images/{{img[7]}}" alt="" class="img-thumbnail rounded mt-2" srcset="" style="height: 350px; max-width: 350px;">
+                </a>
+            </div>
+        {%endfor%}
+    {%endif%}
 </div>
 
 <div class="row mt-4 text-center">
