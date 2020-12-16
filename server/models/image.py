@@ -1,11 +1,11 @@
 from config.db import getDb
 from sqlite3 import Error
 
-def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):     
+def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario,privada):     
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES (?,?,?,?,?);",(titulo,descripcion,ruta,tags,str(id_usuario)))
+        cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario,privada) VALUES (?,?,?,?,?,?,?);",(titulo,descripcion,ruta,filename,tags,str(id_usuario),privada))
         con.commit()
         con.close()     
     except Error:

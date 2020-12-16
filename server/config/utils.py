@@ -21,7 +21,7 @@ def getCurrentUser():
     try:
         con = getDb()
         cur = con.cursor()
-        cur.execute("SELECT id, nombre, correo, activo FROM usuarios WHERE usuario = '" + user + "';")
+        cur.execute("SELECT id, nombre, correo, activo FROM usuarios WHERE usuario = ?;",(user,))
         result = cur.fetchone()
         currentUser = {
             "id": result[0],
