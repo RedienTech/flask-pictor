@@ -1,10 +1,12 @@
 {%extends 'layout.html'%}
 
 {%block menu%}
+
 <ul class="navbar-nav ml-auto">
     <li class="nav-item active">
         <a class="nav-link" href="index.html">Inicio<span class="sr-only"></span></a>
     </li>
+    
     <li class="nav-item">
         <a class="nav-link" href="#" onclick="location.href='index.html'">Cerrar Sesion</a>
     </li>
@@ -13,6 +15,8 @@
             Datos</a>
     </li>
 </ul>
+
+
 {%endblock%}
 
 {%block body%}
@@ -40,7 +44,13 @@
                                 <label for="tags">Tags</label>
                                 <input type="text" id="tags" class="form-control" name="tags">
                             </div>
-                            <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="privada">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Privada
+                                </label>
+                              </div>
+                            <div class="form-group mt-2">
                                 <label for="file">Subir Archivos</label>
                                 <input type="file" class="form-control-file" id="file" name="file" style="visibility: hidden;">
                             </div>
