@@ -17,7 +17,7 @@
 
 {% block body %}
 
-<img src="{{ url_for('static', filename='img/guest.jpg') }}" alt="" class="rounded mx-auto d-block mt-2 img-thumbnail" style="width: 300px;" srcset=""
+<img src="{{ url_for('static', filename='img/guest.png') }}" alt="" class="mx-auto d-block rounded-circle mt-2" style="width: 200px;" srcset=""
     id="thumbnail">
 <h5 class="text-center">{{usuario}}</h5>
 
@@ -70,9 +70,9 @@
 <div class="row mt-4 ml-2">
     {%if images%}
         {%for img in images%}
-            <div class="col-md-4">
-                <a href="/image/modify/{{img[0]}}">
-                    <img src="/static/files/images/{{img[7]}}" alt="" class="img-thumbnail rounded" srcset="">
+            <div class="col-md-4 col-sm-12">
+                <a href="/image/modify/{{img[0]}}" class="mx-auto">
+                    <img src="/static/files/images/{{img[7]}}" alt="" class="img-thumbnail rounded mt-2" srcset="" style="height: 350px; max-width: 350px;">
                 </a>
             </div>
         {%endfor%}

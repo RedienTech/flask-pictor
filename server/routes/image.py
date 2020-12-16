@@ -26,6 +26,8 @@ def downloadImage(id):
 @image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
     if request.method == "POST":
+        chekPrivada = 'privada' in request.form
+        privada = 1 if chekPrivada else 0
         usuario = session["username"]
         titulo = request.form["titulo"]
         descripcion = request.form["descripcion"]
@@ -34,7 +36,8 @@ def ImagenCrear():
         filename = secure_filename(str(date.today()) + "-" + str(datetime.now().hour) + str(datetime.now().minute) + str(datetime.now().second) + "-" + usuario + "-" + file.filename)
         ruta = os.path.join(os.getcwd() + "\server\static\\files\images", filename)
         file.save(ruta)
-        img.sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, utils.getCurrentUser().get("id"))
+        img.sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, utils.getCurrentUser().get("id"), privada)
+        flash("Imagen guardada con exito!!")
         return redirect(url_for('users.Perfil'))
     else:
         return render_template("imagen_crear.html")

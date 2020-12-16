@@ -1,14 +1,14 @@
 from config.db import getDb
 from sqlite3 import Error
 
-def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario):
-    query="INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario) VALUES ('"+titulo+"','"+descripcion+"','"+ruta+"','"+filename+"','"+tags+"',"+str(id_usuario)+");"       
+def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario, privada):    
+    query = "INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario, privada) VALUES (?, ?, ?, ?, ?, ?, ?);"
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute(query, (titulo, descripcion, ruta, filename, tags, id_usuario, privada))
         con.commit()
-        con.close()
+        con.close()     
     except Error:
         print(Error)
 
@@ -23,7 +23,7 @@ def sql_select_image(id):
         print(Error)
 
 def sql_select_imagenes(id_usuario):
-    query="SELECT * FROM imagenes WHERE id_usuario = "+str(id_usuario) +";"
+    query="SELECT * FROM imagenes WHERE id_usuario = "+str(id_usuario) +" ORDER BY fecha_creacion DESC;"
     print(query)
     try:
         con = getDb()
