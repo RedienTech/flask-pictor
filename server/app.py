@@ -16,6 +16,7 @@ def Index():
 
 @app.before_request
 def before_request():
+    print(session.get("username"))
     if "username" in session:
         g.user = getCurrentUser()
     else:
@@ -26,4 +27,4 @@ with app.app_context():
     app.register_blueprint(users, url_prefix='/users')
 
 if __name__ == "__main__":
-    app.run(port = 3000, debug = True )#, ssl_context=('certified.pem', 'secretkey.pem'))
+    app.run(port = 5000, debug = True)

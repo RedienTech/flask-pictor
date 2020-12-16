@@ -1,12 +1,11 @@
 from config.db import getDb
 from sqlite3 import Error
 
-def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario, privada):    
-    query = "INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario, privada) VALUES (?, ?, ?, ?, ?, ?, ?);"
+def sql_insert_imagenes(titulo, descripcion, ruta, tags, id_usuario):     
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query, (titulo, descripcion, ruta, filename, tags, id_usuario, privada))
+        cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, tags, id_usuario) VALUES (?,?,?,?,?);",(titulo,descripcion,ruta,tags,str(id_usuario)))
         con.commit()
         con.close()     
     except Error:
@@ -16,20 +15,18 @@ def sql_select_image(id):
     try:
         con = getDb()
         cur = con.cursor()
-        cur.execute("SELECT id, titulo, descripcion, tags, filename, id_usuario FROM imagenes WHERE id = %s" % id)
+        cur.execute("SELECT id, titulo, descripcion, tags, filename, id_usuario FROM imagenes WHERE id = ?", (id, ))
         image = cur.fetchone()
         return image
     except Error:
         print(Error)
 
 def sql_select_imagenes(id_usuario):
-    query="SELECT * FROM imagenes WHERE id_usuario = "+str(id_usuario) +" ORDER BY fecha_creacion DESC;"
-    print(query)
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
-        imagenes=cursorObj.fetchall()
+        cursorObj.execute("SELECT * FROM imagenes WHERE id_usuario = ? ;",(id_usuario,))
+        imagenes = cursorObj.fetchall()
         con.close()
         return imagenes
     except Error:
@@ -40,7 +37,7 @@ def sql_edit_imagen(id, titulo, descripcion, tags):
     try:
         con = getDb()
         cursorObj=con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("UPDATE imagenes SET titulo = ?, descripcion= ?, tags= ?, privada = ? WHERE id = ?;",(titulo,descripcion,tags, id))
         con.commit()
         con.close()
     except Error:
@@ -51,7 +48,7 @@ def sql_delete_imagen(id):
     try:
         con = getDb()
         cursorObj = con.cursor()
-        cursorObj.execute(query)
+        cursorObj.execute("DELETE FROM imagenes WHERE id=?;",(id,))
         con.commit()
         con.close()
     except Error:

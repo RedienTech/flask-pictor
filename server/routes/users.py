@@ -67,7 +67,7 @@ def SignUp():
             if newUser.register:
                 tok = token.createToken(usuario).decode()
                 yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:3000/users/activate?token='+tok)
+                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+tok)
                 return render_template('activarUsuario.html')
             else:
                 for error in newUser.errors:
