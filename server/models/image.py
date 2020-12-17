@@ -18,6 +18,11 @@ def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario, p
         con = getDb()
         cursorObj = con.cursor()
         cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario, privada) VALUES (?,?,?,?,?,?,?);",(titulo,descripcion,ruta, filename, tags,str(id_usuario), privada))
+def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario,privada):     
+    try:
+        con = getDb()
+        cursorObj = con.cursor()
+        cursorObj.execute("INSERT INTO imagenes (titulo, descripcion, ruta, filename, tags, id_usuario,privada) VALUES (?,?,?,?,?,?,?);",(titulo,descripcion,ruta,filename,tags,str(id_usuario),privada))
         con.commit()
         con.close()     
     except Error:

@@ -144,17 +144,6 @@ def ActivarUsuario():
 @users.route('/recover', methods=["GET", "POST"])
 def RecuperarPassword():
     if request.method=="POST":
-<<<<<<< HEAD
-        email = request.form["email"]
-        con = getDb()
-        cur = con.cursor()
-        user = cur.execute("SELECT id, usuario FROM usuarios WHERE correo = ?", (email,)).fetchone()
-        if user is not None:
-            tok = token.createToken(user[1]).decode()
-            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para recuperar tu contraseña: http://localhost:5000/users/activate?token='+ tok)
-        return "recuperando"
-=======
         RecoverUser=User()        
         form = FormRecuperar(request.form)       
         if form.validate_on_submit():
@@ -170,7 +159,6 @@ def RecuperarPassword():
             return redirect(url_for('users.InicioSesion'))
         else:
             return "Icorrecto"  
->>>>>>> d8974a0b919ce0bab9f3e92c279339f16c4bb9cc
     else:
         return render_template('recoverPassword.html',form=FormRecuperar())
 
