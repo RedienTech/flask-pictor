@@ -1,6 +1,8 @@
 from flask import Blueprint, request, flash, url_for, redirect, session, g, current_app
+import config.utils as utils
 from functools import wraps
 import models.image as img
+import bcrypt
 import sys
 from flask import render_template
 from config.forms import FormRegistro, FormInicio
@@ -24,12 +26,50 @@ def login_required(func):
 
 
 @users.route('/perfil')
-#@login_required
 def Perfil():
     if g.user is None:
         return redirect(url_for('users.InicioSesion'))
     images = img.sql_select_imagenes(g.user["id"])
     return render_template("perfil.html", usuario = g.user["nombre"], images = images)
+
+@users.route('/update', methods = ["GET", "POST"])
+def UpdateUser():
+    if request.method == "POST":
+        id = g.user["id"]
+        con = getDb()
+        cur = con.cursor()
+        cur.execute("SELECT usuario FROM usuarios WHERE id = ?;",(id,))
+        existUser = cur.fetchall()
+        if len(existUser) >= 1:
+            clave = request.form["password"]
+            cur.execute("SELECT clave FROM usuarios WHERE id = ?;",(id,))
+            password = cur.fetchall()
+            trueClave = password[0][0]
+            if utils.comparePassword(clave, trueClave):
+                newClave = request.form["newpassword"]
+                cnewClave = request.form["cnewpassword"]
+                if newClave == cnewClave and utils.isPasswordValid(newClave):
+                    password = newClave.encode(encoding='UTF-8',errors='strict')
+                    clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
+                    cur.execute("UPDATE usuarios SET clave = ? WHERE id = ?", (clave, id))
+                    flash("Contraseña actualizada")
+                    con.commit()
+                    con.close()
+                    return redirect(url_for("users.Perfil"))
+                else:
+                    flash("Las contraseñas no coinciden o son invalidas")
+                    con.close()
+                    return redirect(url_for('users.Perfil'))
+            else:
+                flash("La contraseña es incorrecta")
+                con.close()
+                return redirect(url_for('users.Perfil'))
+        else:
+            flash("Error actualizando el usuario")
+            con.close()
+            return redirect(url_for('users.Perfil'))       
+    else:
+        return render_template('actualizarDatos.html')
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():
@@ -45,7 +85,7 @@ def InicioSesion():
                 return redirect(url_for('users.Perfil'))
             else:
                 flash("Error en la combinacion de usuario y contraseña")
-                return redirect(url_for('users.InicioSesion'))
+                return redirect(url_for('users.SignUp'))
     else:
         if g.user is not None:
             return redirect(url_for('Index'))
@@ -80,18 +120,38 @@ def SignUp():
 
 @users.route('/activate', methods=['GET'])
 def ActivarUsuario():
-    tok = request.args.get("token")
-    payload = token.decodeToken(tok)
-    activatingUser = User()
-    if activatingUser.Activate(payload):
-        return render_template("usuarioActivado.html")
+    if request.method == "POST":
+        if g.user["activo"] == 0:
+            usuario = session["username"]
+            email = request.form["correo"]
+            newToken = token.createToken(usuario).decode()
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+newToken)
+        else:
+            flash("El usuario ya habia sido activado previamente")
+            return redirect(url_for('users.Perfil'))
     else:
-        return("El link ha expirado o es invalido")
+        tok = request.args.get("token")
+        payload = token.decodeToken(tok)
+        activatingUser = User()
+        if activatingUser.Activate(payload):
+            session.pop("username", None)
+            return render_template("usuarioActivado.html")
+        else:
+            return redirect(url_for("users.SignIn"))
 
 @users.route('/recover', methods=["GET", "POST"])
 def RecuperarPassword():
     if request.method=="POST":
-        return "Recuperando"
+        email = request.form["email"]
+        con = getDb()
+        cur = con.cursor()
+        user = cur.execute("SELECT id, usuario FROM usuarios WHERE correo = ?", (email,)).fetchone()
+        if user is not None:
+            tok = token.createToken(user[1]).decode()
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para recuperar tu contraseña: http://localhost:5000/users/activate?token='+ tok)
+        return "recuperando"
     else:
         return render_template('recoverPassword.html')
 

@@ -10,35 +10,36 @@
     </li>
 </ul>
 {%endblock%}
-        
+
 {%block body%}
 <div class="row mt-5">
     <div class="col-md-4 mx-auto">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title text-center">Se ha registrado el usuario, se envió un mensaje a tu correo registrado con un link de Activación, por favor verifica</h5>
-                <form name="frmActivar class="mt-5" method="POST">
+                <h5 class="card-title text-center">Se ha registrado el usuario, se envió un mensaje a tu correo
+                    registrado con un link de Activación, por favor verifica.</h5>
+                <p>Ten en cuenta que puedes descargar imagenes sin haber activado tu cuenta, pero no podras publicar imagenes sin haberlo hecho</p>
+                <form action="/users/activate" class=" mt-5" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-usuario">Usuario</label>
-                            <input type="text" class="form-control" id="input-usuario" value="User001" disabled>
+                            <input type="text" class="form-control" id="input-usuario" name="usuario" value="User001" disabled>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="input-correo">Correo</label>
-                            <input type="text" class="form-control" id="input-correo" value="User001@mail.com" disabled>
+                            <input type="text" class="form-control" id="input-correo" name="correo" value="User001@mail.com" disabled>
                         </div>
                     </div>
 
-    <div class="row mt-4">
+                    <div class="row mt-4">
                         <span class="mx-auto">
-        <button class="btn btn-success mx-auto">Reenviar Correo</button>
-    </div>    
-        <div class="row mt-4">
-                        <span class="mx-auto"><a
-                                href="/users/signin">Inicio de Sesión</a></span>
-                       </div>   
+                            <button class="btn btn-success mx-auto">Reenviar Correo</button>
+                    </div>
+                    <div class="row mt-4">
+                        <span class="mx-auto"><a href="/users/signin">Inicio de Sesión</a></span>
+                    </div>
                 </form>
             </div>
         </div>

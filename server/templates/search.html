@@ -66,26 +66,15 @@
 </div>
 
 <div class="row mt-4 ml-2">
-    <div class="col-md-4">
-        <a href="/image/download"><img src="{{ url_for('static', filename='img/test7.jpg') }}" alt="" class="img-thumbnail rounded" srcset="" ></a>
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test8.jpg') }}" alt="" class="img-thumbnail rounded" srcset="">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test9.jpg') }}" alt="" class="img-thumbnail rounded" srcset="">
-    </div>
-</div>
-<div class="row mt-4 ml-2">
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test4.jpg') }}" alt="" class="img-thumbnail rounded" srcset="">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test5.png') }}" alt="" class="img-thumbnail rounded" srcset="">
-    </div>
-    <div class="col-md-4">
-        <img src="{{ url_for('static', filename='img/test6.png') }}" alt="" class="img-thumbnail rounded" srcset="">
-    </div>
+    {%if images%}
+        {%for img in images%}
+            <div class="col-md-4 col-sm-12">
+                <a href="/image/info?img={{img[0]}}" class="mx-auto">
+                    <img src="/static/files/images/{{img[7]}}" alt="" class="img-thumbnail rounded mt-2" srcset="" style="height: 350px; max-width: 350px;">
+                </a>
+            </div>
+        {%endfor%}
+    {%endif%}
 </div>
 
 <div class="row mt-4 text-center">
