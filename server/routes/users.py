@@ -85,7 +85,7 @@ def InicioSesion():
                 return redirect(url_for('users.Perfil'))
             else:
                 flash("Error en la combinacion de usuario y contraseña")
-                return redirect(url_for('users.InicioSesion'))
+                return redirect(url_for('users.SignUp'))
     else:
         if g.user is not None:
             return redirect(url_for('Index'))
@@ -120,18 +120,38 @@ def SignUp():
 
 @users.route('/activate', methods=['GET'])
 def ActivarUsuario():
-    tok = request.args.get("token")
-    payload = token.decodeToken(tok)
-    activatingUser = User()
-    if activatingUser.Activate(payload):
-        return render_template("usuarioActivado.html")
+    if request.method == "POST":
+        if g.user["activo"] == 0:
+            usuario = session["username"]
+            email = request.form["correo"]
+            newToken = token.createToken(usuario).decode()
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+newToken)
+        else:
+            flash("El usuario ya habia sido activado previamente")
+            return redirect(url_for('users.Perfil'))
     else:
-        return("El link ha expirado o es invalido")
+        tok = request.args.get("token")
+        payload = token.decodeToken(tok)
+        activatingUser = User()
+        if activatingUser.Activate(payload):
+            session.pop("username", None)
+            return render_template("usuarioActivado.html")
+        else:
+            return redirect(url_for("users.SignIn"))
 
 @users.route('/recover', methods=["GET", "POST"])
 def RecuperarPassword():
     if request.method=="POST":
-        return "Recuperando"
+        email = request.form["email"]
+        con = getDb()
+        cur = con.cursor()
+        user = cur.execute("SELECT id, usuario FROM usuarios WHERE correo = ?", (email,)).fetchone()
+        if user is not None:
+            tok = token.createToken(user[1]).decode()
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para recuperar tu contraseña: http://localhost:5000/users/activate?token='+ tok)
+        return "recuperando"
     else:
         return render_template('recoverPassword.html')
 

@@ -44,6 +44,13 @@ def downloadImage(id):
 
 @image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
+    if g.user is None:
+        flash("Necesita iniciar sesion antes de acceder a esta funcionalidad")
+        return redirect(url_for("users.InicioSesion"))
+    else:
+        if g.user["activo"] == 0:
+            flash("Necesita activar su cuenta antes de poder subir imagenes")
+            return redirect(url_for("users.ActivarUsuario"))
     if request.method == "POST":
         chekPrivada = 'privada' in request.form
         privada = 1 if chekPrivada else 0
@@ -87,6 +94,9 @@ def ImagenModificar(id):
 
 @image.route('/delete/<int:id>', methods=["GET"])   
 def EliminarImagen(id):
+    if g.user is None:
+        flash("Necesita iniciar sesion antes de acceder a esta funcionalidad")
+        return redirect(url_for("users.InicioSesion"))
     image = img.sql_select_image(id)
     if image is not None:
         if image[5] == g.user["id"]:
