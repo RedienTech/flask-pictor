@@ -1,6 +1,8 @@
 from flask import Blueprint, request, flash, url_for, redirect, session, g, current_app
+import config.utils as utils
 from functools import wraps
 import models.image as img
+import bcrypt
 import sys
 from flask import render_template
 from config.forms import FormRegistro, FormInicio
@@ -24,12 +26,50 @@ def login_required(func):
 
 
 @users.route('/perfil')
-#@login_required
 def Perfil():
     if g.user is None:
         return redirect(url_for('users.InicioSesion'))
     images = img.sql_select_imagenes(g.user["id"])
     return render_template("perfil.html", usuario = g.user["nombre"], images = images)
+
+@users.route('/update', methods = ["GET", "POST"])
+def UpdateUser():
+    if request.method == "POST":
+        id = g.user["id"]
+        con = getDb()
+        cur = con.cursor()
+        cur.execute("SELECT usuario FROM usuarios WHERE id = ?;",(id,))
+        existUser = cur.fetchall()
+        if len(existUser) >= 1:
+            clave = request.form["password"]
+            cur.execute("SELECT clave FROM usuarios WHERE id = ?;",(id,))
+            password = cur.fetchall()
+            trueClave = password[0][0]
+            if utils.comparePassword(clave, trueClave):
+                newClave = request.form["newpassword"]
+                cnewClave = request.form["cnewpassword"]
+                if newClave == cnewClave and utils.isPasswordValid(newClave):
+                    password = newClave.encode(encoding='UTF-8',errors='strict')
+                    clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
+                    cur.execute("UPDATE usuarios SET clave = ? WHERE id = ?", (clave, id))
+                    flash("Contraseña actualizada")
+                    con.commit()
+                    con.close()
+                    return redirect(url_for("users.Perfil"))
+                else:
+                    flash("Las contraseñas no coinciden o son invalidas")
+                    con.close()
+                    return redirect(url_for('users.Perfil'))
+            else:
+                flash("La contraseña es incorrecta")
+                con.close()
+                return redirect(url_for('users.Perfil'))
+        else:
+            flash("Error actualizando el usuario")
+            con.close()
+            return redirect(url_for('users.Perfil'))       
+    else:
+        return render_template('actualizarDatos.html')
 
 @users.route('/signin', methods=['GET', 'POST'])
 def InicioSesion():

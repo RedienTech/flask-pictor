@@ -7,21 +7,40 @@ from flask import render_template
 import config.utils as utils
 from werkzeug.utils import secure_filename
 
-
-
 image = Blueprint('image', __name__, template_folder='templates')
 
-@image.route('/download')
+@image.route('/info')
 def ImagenDescargar():
-    return render_template("imagen_descargar.html")
+    id = request.args["img"]
+    image = img.sql_select_image(id)
+    usuario = utils.getUser(image[5])
+    tags = image[3].split(',')
+    image = {
+        "id": image[0],
+        "titulo": image[1],
+        "tags": tags,
+        "file": image[4],
+        "descripcion": image[2],
+        "user": usuario
+    } 
+    return render_template("imagen_descargar.html", image = image)
 
 @image.route('/download/<int:id>', methods = ["GET", "POST"])
 def downloadImage(id):
     image = img.sql_select_image(id)
     if image is not None:
-        imageName = image[4]
-        return send_file(os.path.join("static\\files\images\\", imageName), as_attachment=True)
-    return send_file("static/img/tour-eiffel-5210486_1920.jpg",as_attachment=True)
+        if g.user is not None and image[5] == g.user["id"]:
+            imageName = image[4]
+            return send_file(os.path.join("static\\files\images\\", imageName), as_attachment=True)
+        elif image[6] == 0:
+            imageName = image[4]
+            return send_file(os.path.join("static\\files\images\\", imageName), as_attachment=True)
+        else:
+            flash("No tiene permiso para descargar esta imagen")
+            return redirect(url_for('Index'))
+    else: 
+        flash('La imagen que esta intentando descargar no existe o ha sido eliminada')
+        return redirect(url_for('Index'))
 
 @image.route('/create/', methods = ["GET", "POST"])
 def ImagenCrear():
@@ -45,14 +64,18 @@ def ImagenCrear():
 
 @image.route('/modify/<int:id>', methods=["GET", "POST"])
 def ImagenModificar(id):
+    if g.user is None:
+        return redirect(url_for('users.InicioSesion'))
     if request.method == "POST":
         form = request.form
+        chekPrivada = 'privada' in form
+        privada = 1 if chekPrivada else 0
         titulo = form["titulo"]
         descripcion = form["descripcion"]
         tag = form["tags"]
         image = img.sql_select_image(id)
         if image[5] == g.user["id"]:
-            img.sql_edit_imagen(id, titulo, descripcion, tag)
+            img.sql_edit_imagen(id, titulo, descripcion, tag, privada)
             flash("Imagen Actualizada!!!")
             return redirect(url_for('users.Perfil'))
         else:
@@ -77,13 +100,12 @@ def EliminarImagen(id):
         flash("La imagen no existe o ha sido eliminada")
         return redirect(url_for('users.Perfil'))
 
-@image.route('/search/', methods = ["POST"])
-def BuscarImagen():
-    key = request.form["tag"]
-    return redirect(url_for('image.BuscarPorTag', busqueda = key))
 
-@image.route('/search/<busqueda>', methods=["GET"])
-def BuscarPorTag(busqueda):
-    return render_template('search.html', key = busqueda)
+@image.route('/search/', methods=["GET"])
+def BuscarPorTag():
+    busqueda = request.args["tag"]
+    imagenes = img.buscarImagen(busqueda)
+    print(imagenes)
+    return render_template('search.html', key = busqueda, images = imagenes)
 
 
