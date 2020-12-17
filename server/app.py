@@ -16,7 +16,6 @@ def Index():
 
 @app.before_request
 def before_request():
-    print(session.get("username"))
     if "username" in session:
         g.user = getCurrentUser()
     else:
