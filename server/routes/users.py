@@ -162,6 +162,8 @@ def RecuperarPassword():
     else:
         return render_template('recoverPassword.html',form=FormRecuperar())
 
+
+
 @users.route('/logout', methods = ["GET"])
 def LogOut():
     session.pop("username", None)
