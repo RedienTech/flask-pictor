@@ -5,12 +5,13 @@ import models.image as img
 import bcrypt
 import sys
 from flask import render_template
-from config.forms import FormRegistro, FormInicio
+from config.forms import FormRegistro, FormInicio, FormRecuperar
 from models.users import User
 import config.tokens as token
 from config.utils import getCurrentUser
 import yagmail as yagmail
 from config.db import getDb
+from random import choice
 
 users = Blueprint('users', __name__, template_folder='templates')
 
@@ -143,6 +144,7 @@ def ActivarUsuario():
 @users.route('/recover', methods=["GET", "POST"])
 def RecuperarPassword():
     if request.method=="POST":
+<<<<<<< HEAD
         email = request.form["email"]
         con = getDb()
         cur = con.cursor()
@@ -152,10 +154,29 @@ def RecuperarPassword():
             yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
             yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para recuperar tu contraseña: http://localhost:5000/users/activate?token='+ tok)
         return "recuperando"
+=======
+        RecoverUser=User()        
+        form = FormRecuperar(request.form)       
+        if form.validate_on_submit():
+            usuarioCorreo = form.usuarioCorreo.data
+            lista = RecoverUser.recoverPassword(usuarioCorreo,usuarioCorreo)
+            longitud = 18
+            valores = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            p = ""
+            p = p.join([choice(valores) for i in range(longitud)])
+            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+            yag.send(to=lista[1], subject='Recupera tu clave', contents='Utiliza la clave ='+p)
+            RecoverUser.recoverPasswordUpdate(p,lista[0])           
+            return redirect(url_for('users.InicioSesion'))
+        else:
+            return "Icorrecto"  
+>>>>>>> d8974a0b919ce0bab9f3e92c279339f16c4bb9cc
     else:
-        return render_template('recoverPassword.html')
+        return render_template('recoverPassword.html',form=FormRecuperar())
 
 @users.route('/logout', methods = ["GET"])
 def LogOut():
     session.pop("username", None)
     return redirect(url_for('users.InicioSesion'))
+
+

@@ -19,3 +19,7 @@ class FormModificar(FlaskForm):
     titulo = StringField('titulo', validators=[DataRequired()])
     descripcion = StringField('descripcion', validators=[DataRequired()], widget=TextArea())
     tags = StringField('tags', validators=[DataRequired()])
+
+class FormRecuperar(FlaskForm):
+    usuarioCorreo = StringField('usuarioCorreo', validators=[DataRequired()])
+    recuperar = SubmitField('Recuperar')
