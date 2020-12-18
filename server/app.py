@@ -26,4 +26,4 @@ with app.app_context():
     app.register_blueprint(users, url_prefix='/users')
 
 if __name__ == "__main__":
-    app.run(port = 5000, debug = True, ssl_context=("certified.pem", "secretkey.pem"))
+    app.run(host="0.0.0.0", port=443, ssl_context=("certified.pem", "secretkey.pem"))
