@@ -85,7 +85,7 @@ def InicioSesion():
                 return redirect(url_for('users.Perfil'))
             else:
                 flash("Error en la combinacion de usuario y contraseña")
-                return redirect(url_for('users.SignUp'))
+                return redirect(url_for('users.InicioSesion'))
     else:
         if g.user is not None:
             return redirect(url_for('Index'))

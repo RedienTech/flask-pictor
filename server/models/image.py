@@ -12,6 +12,17 @@ def buscarImagen(key):
     except Error:
         print(Error)
 
+def buscarSelfImage(key, id):
+    try:
+        key = '%'+key+'%'
+        con = getDb()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM imagenes WHERE titulo LIKE ? AND id_usuario = ? or tags LIKE ? AND id_usuario = ? or descripcion LIKE ? AND id_usuario = ?;", (key, id, key, id, key, id))
+        result = cur.fetchall()
+        return result
+    except Error:
+        print(Error)
+
 
 def sql_insert_imagenes(titulo, descripcion, ruta, filename, tags, id_usuario, privada):     
     try:
