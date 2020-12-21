@@ -23,12 +23,12 @@
 
 <div class="ml-2 row mt-3">
     <div class="col-md-3">
-        <button class="btn btn-success mx-auto" onclick="location.href='/image/create'">Subir
+        <button class="btn btn-success mx-auto" href="/image/create">Subir
             Imagen</button>
     </div>
     <div class="col-md-5">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" style="width: 200px;" type="search" placeholder="Search"
+        <form class="form-inline my-2 my-lg-0" method="GET" action="/image/selfsearch">
+            <input class="form-control mr-sm-2" name="search" style="width: 200px;" type="search" placeholder="Search"
                 aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar Imagen</button>
         </form>

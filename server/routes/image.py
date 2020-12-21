@@ -115,7 +115,15 @@ def EliminarImagen(id):
 def BuscarPorTag():
     busqueda = request.args["tag"]
     imagenes = img.buscarImagen(busqueda)
-    print(imagenes)
+    return render_template('search.html', key = busqueda, images = imagenes)
+
+@image.route('/selfsearch', methods=["GET"])
+def BuscarEnPerfil():
+    if g.user is None:
+        flash("Necesita iniciar sesion antes de acceder a esta funcionalidad")
+        return redirect(url_for("users.InicioSesion"))
+    busqueda = request.args["search"]
+    imagenes = img.buscarSelfImage(busqueda, g.user["id"])
     return render_template('search.html', key = busqueda, images = imagenes)
 
 
