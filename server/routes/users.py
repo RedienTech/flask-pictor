@@ -133,14 +133,18 @@ def ActivarUsuario():
             flash("El usuario ya habia sido activado previamente")
             return redirect(url_for('users.Perfil'))
     else:
-        tok = request.args.get("token")
-        payload = token.decodeToken(tok)
-        activatingUser = User()
-        if activatingUser.Activate(payload):
-            session.pop("username", None)
-            return render_template("usuarioActivado.html")
+        if request.args.get("token") is not None:
+            tok = request.args.get("token")
+            payload = token.decodeToken(tok)
+            activatingUser = User()
+            if activatingUser.Activate(payload):
+                session.pop("username", None)
+                return render_template("usuarioActivado.html")
+            else:
+                return redirect(url_for("users.Perfil"))
         else:
-            return redirect(url_for("users.SignIn"))
+            return render_template("activarUsuario.html")
+            
 
 @users.route('/recover', methods=["GET", "POST"])
 def RecuperarPassword():
