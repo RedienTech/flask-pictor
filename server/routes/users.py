@@ -154,14 +154,18 @@ def RecuperarPassword():
         if form.validate_on_submit():
             usuarioCorreo = form.usuarioCorreo.data
             lista = RecoverUser.recoverPassword(usuarioCorreo,usuarioCorreo)
-            longitud = 18
-            valores = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            p = ""
-            p = p.join([choice(valores) for i in range(longitud)])
-            yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-            yag.send(to=lista[1], subject='Recupera tu clave', contents='Utiliza la clave ='+p)
-            RecoverUser.recoverPasswordUpdate(p,lista[0])           
-            return redirect(url_for('users.InicioSesion'))
+            if lista is not None:
+                longitud = 18
+                valores = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                p = ""
+                p = p.join([choice(valores) for i in range(longitud)])
+                yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
+                yag.send(to=lista[1], subject='Recupera tu clave', contents='Utiliza la clave ='+p)
+                RecoverUser.recoverPasswordUpdate(p,lista[0])           
+                return redirect(url_for('users.InicioSesion'))
+            else:
+                flash("Parece que el usuario no existe")
+                return redirect(url_for("users.RecuperarPassword"))
         else:
             return "Icorrecto"  
     else:
