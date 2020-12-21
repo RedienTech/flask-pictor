@@ -22,14 +22,8 @@
                 <form action="/users/activate" class=" mt-5" method="POST">
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="input-usuario">Usuario</label>
-                            <input type="text" class="form-control" id="input-usuario" name="usuario" value="User001" disabled>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
                             <label for="input-correo">Correo</label>
-                            <input type="text" class="form-control" id="input-correo" name="correo" value="User001@mail.com" disabled>
+                            <input type="text" class="form-control" id="input-correo" name="correo" value="{{g.user['correo']}}" disabled>
                         </div>
                     </div>
 

@@ -61,9 +61,12 @@ class User:
         cur = self.mydb.cursor()
         cur.execute("SELECT id, activo FROM usuarios WHERE usuario = ?;", (activateUser,))
         existUser = cur.fetchone()
-        if existUser[1] == 0:
-            cur.execute("UPDATE usuarios SET activo = 1 WHERE id = ?;", (existUser[0],))
-            self.mydb.commit()
-            return True
+        if existUser is not None:
+            if existUser[1] == 0:
+                cur.execute("UPDATE usuarios SET activo = 1 WHERE id = ?;", (existUser[0],))
+                self.mydb.commit()
+                return True
+            else:
+                return False
         else:
             return False

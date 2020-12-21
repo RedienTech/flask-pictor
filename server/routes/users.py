@@ -107,7 +107,8 @@ def SignUp():
             if newUser.register:
                 tok = token.createToken(usuario).decode()
                 yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+tok)
+                yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: https://34.229.90.166/users/activate?token='+tok)
+                session["username"] = usuario
                 return render_template('activarUsuario.html')
             else:
                 for error in newUser.errors:
@@ -126,7 +127,7 @@ def ActivarUsuario():
             email = request.form["correo"]
             newToken = token.createToken(usuario).decode()
             yag = yagmail.SMTP('pictorredsocial@gmail.com','misiontic2020')
-            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: http://localhost:5000/users/activate?token='+newToken)
+            yag.send(to=email, subject='Activa tu cuenta', contents='Bienvenido usa el link para activar tu cuenta: https://34.229.90.166/users/activate?token='+newToken)
         else:
             flash("El usuario ya habia sido activado previamente")
             return redirect(url_for('users.Perfil'))
