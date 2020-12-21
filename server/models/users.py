@@ -70,3 +70,15 @@ class User:
                 return False
         else:
             return False
+    
+    def recoverPassword(self,usuario,correo):
+        cur = self.mydb.cursor()
+        recuperado = cur.execute("SELECT usuario,correo FROM usuarios WHERE usuario = ? OR correo = ?;", (usuario,correo)).fetchone()
+        return recuperado
+    def recoverPasswordUpdate(self, password,usuario):
+        cur = self.mydb.cursor()
+        password = password.encode(encoding='UTF-8',errors='strict')
+        clave = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
+        cur.execute("UPDATE usuarios SET clave = ? WHERE usuario = ?;", (clave, usuario))
+        self.mydb.commit()
+        
